@@ -108,5 +108,42 @@ Console.WriteLine($"Students after removing ID 101: {genericStudentStore.GetAll(
 #endregion
 
 
+#region Step 5 - Test Fast and Safe Store
+
+var step5Store = new Store<Student>();
+
+// Test adding items.
+step5Store.Add(new Student { Id = 301, Name = "Ahmed" });
+step5Store.Add(new Student { Id = 302, Name = "Omar" });
+
+// Test direct lookup by ID.
+ foundStudent = step5Store.GetById(302);
+Console.WriteLine($"Found student: {foundStudent?.Name ?? "null"}");
+
+// Test missing ID.
+var missingStudent = step5Store.GetById(999);
+Console.WriteLine($"Missing student: {missingStudent?.Name ?? "null"}");
+
+// Test duplicate ID.
+try
+{
+    step5Store.Add(new Student { Id = 301, Name = "Ali" });
+}
+catch (InvalidOperationException ex)
+{
+    Console.WriteLine($"Duplicate ID error: {ex.Message}");
+}
+
+// Test GetAll.
+var allStudents = step5Store.GetAll();
+Console.WriteLine($"Students count: {allStudents.Count}");
+
+// Test Remove.
+step5Store.Remove(301);
+Console.WriteLine($"Students count after removal: {step5Store.GetAll().Count}");
+
+#endregion
+
+
 
 

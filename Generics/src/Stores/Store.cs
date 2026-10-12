@@ -5,43 +5,53 @@ using System.Text;
 
 namespace GenericsLab.Stores
 {
-    // Step 4: Replaces StudentStore and CourseStore with one reusable generic store.
+
     public class Store<T> where T : IHasId
     {
-        private readonly List<T> _items = new();
+        private readonly Dictionary<int, T> _items = new();
 
-        // Add: Add an item to the store.
+        // Add: Add an item and prevent duplicate IDs.
         public void Add(T item)
         {
-            _items.Add(item);
+            if (_items.ContainsKey(item.Id))
+            {
+                throw new InvalidOperationException(
+                    $"An item with ID {item.Id} already exists.");
+            }
+
+            _items.Add(item.Id, item);
         }
 
-        // GetById: Intentionally causes a compile-time error in Step 3.
+        // GetById: Find an item directly using its ID.
         public T? GetById(int id)
         {
-            foreach (var item in _items)
+            if (_items.TryGetValue(id, out var item))
             {
-                if (item.Id == id)
-                    return item;
+                return item;
             }
 
             return default;
         }
 
-        // GetAll: Return all items.
-        public List<T> GetAll()
+        // GetAll: Return a read-only snapshot of all items.
+        public IReadOnlyCollection<T> GetAll()
         {
-            return _items;
+            var snapshot = new List<T>();
+
+            foreach (var item in _items.Values)
+            {
+                snapshot.Add(item);
+            }
+
+            return snapshot.AsReadOnly();
         }
 
-        // Remove: Remove an item by its ID.
+        // Remove: Remove an item using its ID.
         public void Remove(int id)
         {
-            var item = GetById(id);
-
-            if (item is not null)
-                _items.Remove(item);
+            _items.Remove(id);
         }
     }
+
 
 }
