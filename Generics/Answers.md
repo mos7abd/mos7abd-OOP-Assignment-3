@@ -15,3 +15,19 @@
 **Conclusion:**
 
 The two stores contain duplicated logic. This suggests that we can create one generic `Store<T>` class to handle different entity types and reduce code duplication.
+
+## Step 3 — Why Does GetById Fail to Compile?
+
+**Compiler error:**
+
+text
+'T' does not contain a definition for 'Id' and no accessible extension method 'Id' accepting a first argument of type 'T' could be found (are you missing a using directive or an assembly reference?)
+
+
+**Explanation:**
+
+The generic type parameter `T` can represent any type. The compiler does not know that every type used with `Store<T>` has an `Id` property.
+
+Although both `Student` and `Course` have an `Id` property, this does not guarantee that every possible type `T` has one.
+
+We need to constrain `T` to types that provide an `Id` property. In Step 4, we will introduce the `IHasId` interface and use the `where T : IHasId` constraint to solve this problem.
