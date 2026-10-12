@@ -78,4 +78,35 @@ using GenericsLab.Stores;
 #endregion
 
 
+#region Step 4 - Test Generic Store with IHasId
+
+// Test Store<Student>
+var genericStudentStore = new Store<Student>();
+
+genericStudentStore.Add(new Student { Id = 101, Name = "Ali" });
+genericStudentStore.Add(new Student { Id = 102, Name = "Omar" });
+
+var foundStudent = genericStudentStore.GetById(102);
+Console.WriteLine($"Generic Store - Student: {foundStudent?.Name ?? "null"}");
+
+var missingGenericStudent = genericStudentStore.GetById(999);
+Console.WriteLine($"Generic Store - Missing Student: {missingGenericStudent?.Name ?? "null"}");
+
+// Test Store<Course>
+var genericCourseStore = new Store<Course>();
+
+genericCourseStore.Add(new Course { Id = 201, Title = "C# Advanced", Price = 1500m });
+genericCourseStore.Add(new Course { Id = 202, Title = "ASP.NET Core", Price = 2000m });
+
+var foundCourseStep4 = genericCourseStore.GetById(202);
+Console.WriteLine($"Generic Store - Course: {foundCourseStep4?.Title ?? "null"}");
+
+// Test Remove
+genericStudentStore.Remove(101);
+Console.WriteLine($"Students after removing ID 101: {genericStudentStore.GetAll().Count}");
+
+#endregion
+
+
+
 

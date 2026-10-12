@@ -1,11 +1,12 @@
-﻿using System;
+﻿using GenericsLab.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace GenericsLab.Models
 {
 
-    public class Student
+    public class Student : IHasId
     {
         public int Id { get; set; }
 

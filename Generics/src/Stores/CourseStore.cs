@@ -5,7 +5,8 @@ using System.Text;
 
 namespace GenericsLab.Stores
 {
-
+    // Step 4: Replaced by Store<Course>.
+    // Kept for reference to show the design before introducing generics.
     public class CourseStore
     {
         private readonly List<Course> _courses = new();

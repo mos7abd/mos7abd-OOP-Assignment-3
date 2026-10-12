@@ -1,10 +1,12 @@
-﻿using System;
+﻿using GenericsLab.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace GenericsLab.Stores
 {
-    public class Store<T>
+    // Step 4: Replaces StudentStore and CourseStore with one reusable generic store.
+    public class Store<T> where T : IHasId
     {
         private readonly List<T> _items = new();
 
