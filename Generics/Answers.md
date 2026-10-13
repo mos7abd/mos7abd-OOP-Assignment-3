@@ -31,3 +31,12 @@ The generic type parameter `T` can represent any type. The compiler does not kno
 Although both `Student` and `Course` have an `Id` property, this does not guarantee that every possible type `T` has one.
 
 We need to constrain `T` to types that provide an `Id` property. In Step 4, we will introduce the `IHasId` interface and use the `where T : IHasId` constraint to solve this problem.
+
+
+## Step 7 — Prove It in Main
+
+The `Main` method demonstrates that the generic store and extension methods work as expected. It also verifies that duplicate IDs are rejected and that `Store<string>()` does not compile because `string` does not implement `IHasId`.
+
+## Final Question — Common Name of the Class
+
+The class built in Steps 4 and 5 is a **Generic Repository**, which follows the Repository Pattern.
