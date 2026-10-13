@@ -1,4 +1,5 @@
 ﻿
+using GenericsLab.Extensions;
 using GenericsLab.Models;
 using GenericsLab.Stores;
 
@@ -143,6 +144,83 @@ step5Store.Remove(301);
 Console.WriteLine($"Students count after removal: {step5Store.GetAll().Count}");
 
 #endregion
+
+
+
+#region Step 6 - Generic Extension Methods Tests
+
+// Test data
+var studentsForPaging = new List<Student>
+{
+    new Student { Id = 1, Name = "Ahmed" },
+    new Student { Id = 2, Name = "Omar" },
+    new Student { Id = 3, Name = "Ali" },
+    new Student { Id = 4, Name = "Mona" },
+    new Student { Id = 5, Name = "Sara" }
+};
+
+var coursesForPaging = new List<Course>
+{
+    new Course { Id = 101, Title = "C#", Price = 1000m },
+    new Course { Id = 102, Title = "SQL", Price = 1200m },
+    new Course { Id = 103, Title = "ASP.NET Core", Price = 1500m },
+    new Course { Id = 104, Title = "Angular", Price = 1800m }
+};
+
+// R1: Page<T>
+Console.WriteLine("=== R1: Page Students ===");
+
+foreach (var student in studentsForPaging.Page(2, 2))
+{
+    Console.WriteLine($"{student.Id} - {student.Name}");
+}
+
+Console.WriteLine("=== R1: Page Courses ===");
+
+foreach (var course in coursesForPaging.Page(2, 2))
+{
+    Console.WriteLine($"{course.Id} - {course.Title}");
+}
+
+// R1: Invalid page numbers
+try
+{
+    studentsForPaging.Page(0, 2).GetEnumerator().MoveNext();
+}
+catch (ArgumentOutOfRangeException ex)
+{
+    Console.WriteLine($"Invalid page: {ex.Message}");
+}
+
+// R2: FindById<T>
+Console.WriteLine("=== R2: FindById ===");
+
+var foundStudent1 = studentsForPaging.FindById(3);
+Console.WriteLine($"Found student: {foundStudent1?.Name ?? "null"}");
+
+var missingStudent1 = studentsForPaging.FindById(999);
+Console.WriteLine($"Missing student: {missingStudent1?.Name ?? "null"}");
+
+var foundCourse = coursesForPaging.FindById(103);
+Console.WriteLine($"Found course: {foundCourse?.Title ?? "null"}");
+
+var missingCourse = coursesForPaging.FindById(999);
+Console.WriteLine($"Missing course: {missingCourse?.Title ?? "null"}");
+
+// R3: ToIdDictionary<T>
+Console.WriteLine("=== R3: ToIdDictionary ===");
+
+var studentDictionary = studentsForPaging.ToIdDictionary();
+Console.WriteLine($"Student dictionary count: {studentDictionary.Count}");
+Console.WriteLine($"Student with ID 3: {studentDictionary[3].Name}");
+
+var courseDictionary = coursesForPaging.ToIdDictionary();
+Console.WriteLine($"Course dictionary count: {courseDictionary.Count}");
+Console.WriteLine($"Course with ID 103: {courseDictionary[103].Title}");
+
+#endregion
+
+
 
 
 
